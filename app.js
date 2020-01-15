@@ -13,6 +13,30 @@
 		}
 	}
 
+	class Bd{
+
+		constructor(){
+			let id = localStorage.getItem('id')
+			if (id === null) {
+
+				localStorage.setItem('id', 0)
+			}
+		}
+
+		getProximoId() {
+			let proximoId = localStorage.getItem('id')
+			 return (parseInt(proximoId) + 1) 
+		}
+		gravar(d){
+			let id = this.getProximoId()
+			localStorage.setItem('id',id)
+			localStorage.setItem(id, JSON.stringify(d)) // 2 parâmetros ( nome do objeto) (JSON)
+
+		}
+	}
+
+	let bd = new Bd()
+
 function cadastrarDespesa(){
 	let ano = document.getElementById('ano')
 	let mes = document.getElementById('mes')
@@ -22,11 +46,9 @@ function cadastrarDespesa(){
 	let valor = document.getElementById('valor')
 
 	let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, descricao.value,valor.value)
-	gravar(despesa)
+	bd.gravar(despesa)
 	console.log(despesa)
 
 }
 
-function gravar(d){
-	localStorage.setItem('despesa', JSON.stringify(d))
-}
+
