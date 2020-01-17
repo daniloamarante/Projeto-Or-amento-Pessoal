@@ -11,6 +11,16 @@
 			this.descricao = descricao
 			this.valor = valor
 		}
+		validarDados(){
+
+			for(let i in this){
+				if (this[i] == undefined || this[i] == '' || this[i] == null) {
+					return false
+				}
+			}
+			return true
+
+		}
 	}
 
 	class Bd{
@@ -46,8 +56,29 @@ function cadastrarDespesa(){
 	let valor = document.getElementById('valor')
 
 	let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, descricao.value,valor.value)
-	bd.gravar(despesa)
-	console.log(despesa)
+	
+	if (despesa.validarDados()) {
+		bd.gravar(despesa)
+
+		document.getElementById('modal_color_titulo').className = "modal-header text-success"
+		document.getElementById('modal_conteudo').innerHTML = 'Registro efetuado com sucesso'
+		document.getElementById('conteudo_modal').innerHTML = 'Dados da despesa cadastrados com sucesso'
+		document.getElementById('modal_btn').className = "btn btn-success"
+		document.getElementById('modal_btn').innerHTML = 'Voltar'
+
+		$('#modalGravarDespesa').modal('show')
+	} else {
+		document.getElementById('modal_color_titulo').className = "modal-header text-danger"
+		document.getElementById('modal_conteudo').innerHTML = 'Houve um erro na gravação dos dados'
+		document.getElementById('conteudo_modal').innerHTML = 'Existem campos que precisam ser preenchidos'
+		document.getElementById('modal_btn').className = "btn btn-danger"
+		document.getElementById('modal_btn').innerHTML = 'Voltar e Corrigir'
+
+		$('#modalGravarDespesa').modal('show')
+	}
+	
+	
+
 
 }
 
