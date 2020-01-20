@@ -23,6 +23,7 @@
 		}
 	}
 
+	// Objeto BD - Local Storage
 	class Bd{
 
 		constructor(){
@@ -42,6 +43,31 @@
 			localStorage.setItem('id',id)
 			localStorage.setItem(id, JSON.stringify(d)) // 2 parâmetros ( nome do objeto) (JSON)
 
+		}
+
+		recuperarTodosRegistros(){
+		// Array de despesas 	
+		let despesas = Array()	
+
+		let id = localStorage.getItem('id')
+
+		// Recuperar todas as despesas cadastradas em LocalStorage	
+		  for(let i = 1; i <= id; i++){
+
+		  	// Recuperar despesa
+		  	let despesa = JSON.parse(localStorage.getItem(i))
+
+		  	//existe a possibilidade de haver indices que foram pulados/removidos
+		  	// nestes casos vamos pular esses indices.
+		  	if (despesa === null) {
+		  		continue
+		  	}
+
+		  	despesas.push(despesa)
+
+		  	
+		  }
+		  return despesas
 		}
 	}
 
@@ -76,10 +102,43 @@ function cadastrarDespesa(){
 
 		$('#modalGravarDespesa').modal('show')
 	}
-	
-	
-
 
 }
 
+
+	function carregaListaDespesas(){
+	   let despesas = Array()
+
+	   despesas = bd.recuperarTodosRegistros()
+	   console.log(despesas)
+
+	   let listaDespesas = document.getElementById('listaDespesas')
+
+
+	   despesas.forEach(function(d) {
+
+		let linha = listaDespesas.insertRow()
+
+		linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`
+		
+
+		switch(d.tipo){
+			case '1' : d.tipo = 'Alimentação'
+				break
+			case '2' : d.tipo = 'Educação'
+				break
+			case '3' : d.tipo = 'Lazer'
+				break
+			case '4' : d.tipo = 'Saúde'
+				break
+			case '5' : d.tipo = 'Transporte'
+				break
+		}
+
+		linha.insertCell(1).innerHTML = d.tipo
+		linha.insertCell(2).innerHTML = d.descricao
+		linha.insertCell(3).innerHTML = d.valor
+
+	   })
+	}
 
