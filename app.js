@@ -69,6 +69,10 @@
 		  }
 		  return despesas
 		}
+
+		pesquisar(despesa){
+			console.log(despesa)
+		}
 	}
 
 	let bd = new Bd()
@@ -86,6 +90,9 @@ function cadastrarDespesa(){
 	if (despesa.validarDados()) {
 		bd.gravar(despesa)
 
+		
+
+		//Incluindo Modal de Forma programática
 		document.getElementById('modal_color_titulo').className = "modal-header text-success"
 		document.getElementById('modal_conteudo').innerHTML = 'Registro efetuado com sucesso'
 		document.getElementById('conteudo_modal').innerHTML = 'Dados da despesa cadastrados com sucesso'
@@ -93,7 +100,17 @@ function cadastrarDespesa(){
 		document.getElementById('modal_btn').innerHTML = 'Voltar'
 
 		$('#modalGravarDespesa').modal('show')
+
+		//Lógica para limpar os campos após a gravação
+		document.getElementById('ano').value = ''
+		document.getElementById('mes').value = ''
+		document.getElementById('dia').value = ''
+		document.getElementById('tipo').value = ''
+		document.getElementById('descricao').value = ''
+		document.getElementById('valor').value = ''
+
 	} else {
+		//Incluindo Modal de Forma programática
 		document.getElementById('modal_color_titulo').className = "modal-header text-danger"
 		document.getElementById('modal_conteudo').innerHTML = 'Houve um erro na gravação dos dados'
 		document.getElementById('conteudo_modal').innerHTML = 'Existem campos que precisam ser preenchidos'
@@ -140,5 +157,19 @@ function cadastrarDespesa(){
 		linha.insertCell(3).innerHTML = d.valor
 
 	   })
+	}
+
+	function pesquisarDespesas(){
+		let ano = document.getElementById('ano').value 
+		let mes = document.getElementById('mes').value 
+		let dia = document.getElementById('dia').value 
+		let tipo = document.getElementById('tipo').value 
+		let descricao = document.getElementById('descricao').value 
+		let valor = document.getElementById('valor').value 
+
+		let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
+
+		bd.pesquisar(despesa)
+
 	}
 
