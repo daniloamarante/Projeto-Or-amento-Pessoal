@@ -71,7 +71,41 @@
 		}
 
 		pesquisar(despesa){
-			console.log(despesa)
+			let despesasFiltradas = Array()
+			despesasFiltradas =  this.recuperarTodosRegistros()
+			console.log(despesasFiltradas)
+
+
+			//ano
+			   if (despesa.ano != '') {	
+			   console.log('Filtro de ano')		
+			   despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano )
+			   }		
+			//mes
+				if (despesa.mes != '') {			
+			   despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes )
+			   }		
+
+			// dia
+				if (despesa.dia != '') {			
+			   despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia )
+			   }		
+			//tipo
+				if (despesa.tipo != '') {			
+			   despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo )
+			   }		
+			//descricao
+				if (despesa.descricao != '') {			
+			   despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao )
+			   }		
+
+			//valor
+				if (despesa.valor != '') {			
+			   despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor )
+			   }
+
+			   return despesasFiltradas		 
+
 		}
 	}
 
@@ -102,12 +136,12 @@ function cadastrarDespesa(){
 		$('#modalGravarDespesa').modal('show')
 
 		//Lógica para limpar os campos após a gravação
-		document.getElementById('ano').value = ''
-		document.getElementById('mes').value = ''
-		document.getElementById('dia').value = ''
-		document.getElementById('tipo').value = ''
-		document.getElementById('descricao').value = ''
-		document.getElementById('valor').value = ''
+		ano.value = ''
+		mes.value = ''
+		dia.value = ''
+		tipo.value = ''
+		descricao.value = ''
+		valor.value = ''
 
 	} else {
 		//Incluindo Modal de Forma programática
@@ -123,13 +157,13 @@ function cadastrarDespesa(){
 }
 
 
-	function carregaListaDespesas(){
-	   let despesas = Array()
-
+	function carregaListaDespesas(despesas = Array()){
+	   if (despesas.length == 0) {
 	   despesas = bd.recuperarTodosRegistros()
-	   console.log(despesas)
+	   }
 
 	   let listaDespesas = document.getElementById('listaDespesas')
+	   listaDespesas.innerHTML = ''
 
 
 	   despesas.forEach(function(d) {
@@ -169,7 +203,10 @@ function cadastrarDespesa(){
 
 		let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
 
-		bd.pesquisar(despesa)
+		let despesas = bd.pesquisar(despesa)
 
+		this.carregaListaDespesas(despesas)
 	}
+
+	
 
